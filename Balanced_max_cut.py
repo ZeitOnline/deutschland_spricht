@@ -750,13 +750,19 @@ def main():
     rnd = random.Random(0)
 
     edges = []
+    max_edges_per_node = 8
+    min_edges_per_node = 0
 
     for u in range(n):
-        for _ in range(2):
+        # pick random number of edges for this node
+        num_edges = rnd.randint(min_edges_per_node, max_edges_per_node)
+        for _ in range(num_edges):
             v = rnd.randrange(n)
-            if v != u:
-                edges.append((u, v))
+            if v == u:
+                continue  # avoid self-loop
+            edges.append((u, v))  # duplicates are allowed
 
+    # build adjacency list (your existing function handles duplicates)
     adj = build_adjacency(n, edges)
 
     res = greedy_balanced_maxcut(
